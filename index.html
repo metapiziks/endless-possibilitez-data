@@ -97,25 +97,13 @@
               <label class="block text-xs font-semibold text-slate-400 mb-1">Event Title</label>
               <input type="text" id="eventTitle" required placeholder="e.g., Athens Upgrade" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
             </div>
-            
-            <!-- Intended Target Field -->
             <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Intended Target</label>
-              <select id="eventTarget" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-slate-200">
-                <option value="Caster">Caster</option>
-                <option value="Opponent">Opponent</option>
-                <option value="Both Players">Both Players</option>
-              </select>
-            </div>
-
-            <div class="md:col-span-2">
               <label class="block text-xs font-semibold text-slate-400 mb-1">Required Tag Filter (Optional)</label>
               <input type="text" id="eventTagFilter" placeholder="e.g., red" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
             </div>
-
             <div class="md:col-span-2">
               <label class="block text-xs font-semibold text-slate-400 mb-1">Body Text / Description</label>
-              <textarea id="eventBody" rows="2" required placeholder="e.g., +1/+1 and +5 Life Points to card" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500"></textarea>
+              <textarea id="eventBody" rows="2" required placeholder="e.g., +1/+1 and +5 Life Points to active card" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500"></textarea>
             </div>
             <div class="md:col-span-2 flex justify-end">
               <button type="submit" class="admin-only-btn bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2 rounded-lg text-sm transition opacity-50 cursor-not-allowed" disabled>
@@ -159,20 +147,20 @@
         </div>
       </section>
 
-      <!-- TAB 3: Tags Section with Auto-Emoji Matcher -->
+      <!-- TAB 3: Tags Section -->
       <section id="tabTags" class="space-y-4 hidden">
         <div class="bg-slate-950 border border-slate-800 rounded-xl p-5">
           <h3 class="text-sm font-bold mb-3">Add New Tag</h3>
-          <form id="tagForm" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-            <div class="md:col-span-2">
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Tag Name (e.g., cat, dragon, fire)</label>
-              <input type="text" id="tagName" required placeholder="Type tag name..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
+          <form id="tagForm" class="grid grid-cols-3 gap-3">
+            <div class="col-span-2">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Tag Identifier</label>
+              <input type="text" id="tagName" required placeholder="e.g., dragon" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Auto-Generated Emoji</label>
-              <div id="emojiPreview" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xl text-center">🏷️</div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Emoji Icon</label>
+              <input type="text" id="tagEmoji" required placeholder="🐉" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500">
             </div>
-            <div class="md:col-span-3 flex justify-end">
+            <div class="col-span-3 flex justify-end">
               <button type="submit" class="admin-only-btn bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2 rounded-lg text-sm transition opacity-50 cursor-not-allowed" disabled>
                 Add Tag
               </button>
@@ -194,38 +182,6 @@
   <script>
     // --- Application Constants ---
     const SUPER_ADMIN_WALLET = "tz29cFey5qSECYZwfvczPfj8NNTpKPgTvKVg";
-
-    // --- Built-in Auto Emoji Lookup Table ---
-    const EMOJI_MAP = {
-      cat: "🐱", kitten: "🐱", feline: "🐱",
-      dog: "🐶", puppy: "🐶",
-      dragon: "🐉", wyvern: "🐉",
-      fire: "🔥", flame: "🔥", burn: "🔥",
-      water: "💧", ocean: "🌊", wave: "🌊",
-      ice: "❄️", frost: "❄️",
-      lightning: "⚡", storm: "⚡", thunder: "⚡",
-      earth: "🌿", nature: "🍃",
-      skull: "💀", death: "💀", undead: "💀",
-      ghost: "👻",
-      sword: "⚔️", blade: "⚔️", weapon: "⚔️",
-      shield: "🛡️", armor: "🛡️",
-      magic: "🪄", wizard: "🧙‍♂️",
-      crown: "👑", king: "👑", queen: "👑",
-      red: "🔴", blue: "🔵", green: "🟢", yellow: "🟡", purple: "🟣", black: "🖤", white: "🤍",
-      star: "⭐", sun: "☀️", moon: "🌙",
-      heart: "❤️", love: "❤️",
-      poison: "🧪", toxic: "☣️",
-      robot: "🤖", mech: "🤖",
-      alien: "👽", space: "🚀",
-      demon: "😈", devil: "👿",
-      angel: "😇", holy: "✨"
-    };
-
-    function autoDetectEmoji(text) {
-      if (!text) return "🏷️";
-      const clean = text.trim().toLowerCase();
-      return EMOJI_MAP[clean] || "🏷️";
-    }
 
     // --- Firebase Initialization (Replace with your Firebase Config) ---
     const firebaseConfig = {
@@ -280,6 +236,7 @@
         if (docSnap.exists) {
           enrolledCoAdmins = docSnap.data().coAdmins || [];
         } else {
+          // Initialize doc if missing
           await docRef.set({ superAdmin: SUPER_ADMIN_WALLET, coAdmins: [] });
           enrolledCoAdmins = [];
         }
@@ -295,6 +252,7 @@
       isSuperAdmin = currentUserWallet === SUPER_ADMIN_WALLET;
       isAuthorizedAdmin = isSuperAdmin || enrolledCoAdmins.includes(currentUserWallet);
 
+      // UI Rules logic
       const enrollBtn = document.getElementById('enrollBtn');
       if (isSuperAdmin) {
         enrollBtn.disabled = false;
@@ -394,57 +352,6 @@
       });
     }
 
-    // --- Live Tag Emoji Preview Listener ---
-    const tagNameInput = document.getElementById('tagName');
-    const emojiPreview = document.getElementById('emojiPreview');
-
-    tagNameInput.addEventListener('input', (e) => {
-      emojiPreview.textContent = autoDetectEmoji(e.target.value);
-    });
-
-    // --- Tag Form Submission ---
-    document.getElementById('tagForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!isAuthorizedAdmin) return;
-
-      const name = tagNameInput.value.trim().toLowerCase();
-      const emoji = autoDetectEmoji(name);
-
-      if (name && !localTags.some(t => t.name === name)) {
-        localTags.push({ name, emoji });
-        renderContent();
-        tagNameInput.value = '';
-        emojiPreview.textContent = "🏷️";
-      }
-    });
-
-    // --- Event Form Submission ---
-    document.getElementById('eventForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!isAuthorizedAdmin) return;
-
-      const title = document.getElementById('eventTitle').value.trim();
-      const target = document.getElementById('eventTarget').value;
-      const tagFilter = document.getElementById('eventTagFilter').value.trim();
-      const body = document.getElementById('eventBody').value.trim();
-
-      const newEvent = {
-        id: `event-${Date.now()}`,
-        title,
-        target,
-        tagFilter,
-        body
-      };
-
-      localEvents.push(newEvent);
-      renderContent();
-
-      // Clear Form
-      document.getElementById('eventTitle').value = '';
-      document.getElementById('eventTagFilter').value = '';
-      document.getElementById('eventBody').value = '';
-    });
-
     // --- Tab Switcher ---
     function switchTab(tab) {
       document.getElementById('tabEvents').classList.add('hidden');
@@ -469,9 +376,8 @@
 
     // --- Sample Data Loaders & Renderers ---
     let localEvents = [
-      { id: "event-1", title: "Athens Upgrade", target: "Caster", body: "+1/+1 and +5 Life Points to active card", tagFilter: "" },
-      { id: "event-2", title: "Mars Retrograde", target: "Both Players", body: "All cards with 'red' tag decrease stats -3/-3", tagFilter: "red" },
-      { id: "event-3", title: "Curse of Tezos", target: "Opponent", body: "Reduces opponent's active card ATK by 2", tagFilter: "" }
+      { id: "event-1", title: "Athens Upgrade", body: "+1/+1 and +5 Life Points to player at turn", tagFilter: "" },
+      { id: "event-2", title: "Mars Retrograde", body: "All cards with 'red' tag decrease stats -3/-3", tagFilter: "red" }
     ];
 
     let localFlavors = [
@@ -481,37 +387,18 @@
     ];
 
     let localTags = [
-      { name: "cat", emoji: "🐱" },
       { name: "red", emoji: "🔴" },
       { name: "dragon", emoji: "🐉" },
       { name: "skull", emoji: "💀" }
     ];
 
     function renderContent() {
-      // Helper for target badges
-      const getTargetBadge = (target) => {
-        switch(target) {
-          case 'Caster':
-            return `<span class="text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded font-medium">🎯 Target: Caster</span>`;
-          case 'Opponent':
-            return `<span class="text-xs bg-rose-950 text-rose-400 border border-rose-800 px-2 py-0.5 rounded font-medium">🎯 Target: Opponent</span>`;
-          case 'Both Players':
-            return `<span class="text-xs bg-purple-950 text-purple-400 border border-purple-800 px-2 py-0.5 rounded font-medium">🎯 Target: Both Players</span>`;
-          default:
-            return '';
-        }
-      };
-
       // Render Events
       const eventsEl = document.getElementById('eventsList');
       eventsEl.innerHTML = localEvents.map(e => `
-        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg flex justify-between items-start">
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <h4 class="font-bold text-sm text-indigo-300">${e.title}</h4>
-              ${getTargetBadge(e.target)}
-              ${e.tagFilter ? `<span class="text-xs bg-slate-800 text-amber-400 border border-slate-700 px-2 py-0.5 rounded">Tag: ${e.tagFilter}</span>` : ''}
-            </div>
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-lg flex justify-between items-start">
+          <div>
+            <h4 class="font-bold text-sm text-indigo-300">${e.title} ${e.tagFilter ? `<span class="text-xs font-normal text-amber-400">[Tag: ${e.tagFilter}]</span>` : ''}</h4>
             <p class="text-xs text-slate-400 mt-1">${e.body}</p>
           </div>
         </div>
